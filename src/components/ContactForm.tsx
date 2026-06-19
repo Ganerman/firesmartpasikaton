@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useForm, ValidationError } from '@formspree/react';
 import SectionHeader from './SectionHeader';
 
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT as string | undefined;
+const FORMSPREE_FORM_ID = FORMSPREE_ENDPOINT
+  ? FORMSPREE_ENDPOINT.split('/').filter(Boolean).pop() ?? 'mykaqvdd'
+  : 'mykaqvdd';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +17,14 @@ const ContactForm = () => {
     subject: 'general',
     message: '',
   });
-  
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+
+  const [state, handleSubmit] = useForm(FORMSPREE_FORM_ID);
+
+  useEffect(() => {
+    if (state.succeeded) {
+      setFormData({ name: '', email: '', phone: '', subject: 'general', message: '' });
+    }
+  }, [state.succeeded]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -25,49 +34,10 @@ const ContactForm = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMessage('');
-
-    if (!FORMSPREE_ENDPOINT) {
-      setStatus('error');
-      setErrorMessage('Formspree endpoint is missing. Add VITE_FORMSPREE_ENDPOINT to your .env.local file.');
-      return;
-    }
-
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          subject: formData.subject,
-          message: formData.message,
-          team: 'Team PASIKATON',
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Formspree rejected the message.');
-      }
-      
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', subject: 'general', message: '' });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setStatus('idle'), 5000);
-    } catch {
-      setStatus('error');
-      setErrorMessage('Failed to send message. Please check your Formspree form and try again.');
-      setTimeout(() => setStatus('idle'), 5000);
-    }
-  };
+  const errors = state.errors ?? [];
+  const errorMessage = errors.length > 0
+    ? errors.map(error => error.message).join(' ')
+    : 'Failed to send message. Please check your Formspree form and try again.';
 
   return (
     <section id="contact" className="py-24 lg:py-28 relative border-t border-white/8">
@@ -211,10 +181,16 @@ const ContactForm = () => {
                   className="w-full px-4 py-2.5 rounded-lg bg-surface border border-white/10 text-white placeholder-text-muted focus:outline-none focus:border-cyan-accent/50 transition-colors resize-none"
                   placeholder="Tell us more about your inquiry."
                 />
+                <ValidationError
+                  prefix="Message"
+                  field="message"
+                  errors={state.errors}
+                  className="mt-2 text-sm text-red-alert"
+                />
               </div>
 
               {/* Status Messages */}
-              {status === 'success' && (
+              {state.succeeded && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -228,16 +204,16 @@ const ContactForm = () => {
                 </motion.div>
               )}
 
-              {status === 'error' && (
+              {state.submitting && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-4 rounded-lg bg-red-alert/10 border border-red-alert/30 flex items-start gap-3"
+                  className="mb-6 p-4 rounded-lg bg-orange-accent/10 border border-orange-accent/30 flex items-start gap-3"
                 >
-                  <AlertCircle className="w-5 h-5 text-red-alert flex-shrink-0 mt-0.5" />
+                  <div className="w-5 h-5 rounded-full bg-orange-accent animate-pulse" />
                   <div>
-                    <p className="text-red-alert font-semibold text-sm">Error sending message</p>
-                    <p className="text-text-secondary text-sm">{errorMessage}</p>
+                    <p className="text-orange-accent font-semibold text-sm">Sending message...</p>
+                    <p className="text-text-secondary text-sm">Please wait while we submit your form.</p>
                   </div>
                 </motion.div>
               )}
@@ -246,11 +222,11 @@ const ContactForm = () => {
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
-                disabled={status === 'loading'}
+                disabled={state.submitting || state.succeeded}
                 type="submit"
                 className="w-full btn-primary py-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {status === 'loading' ? (
+                {state.submitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Sending...
