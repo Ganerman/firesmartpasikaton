@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 import SectionHeader from './SectionHeader';
 
@@ -33,11 +33,6 @@ const ContactForm = () => {
       [name]: value,
     }));
   };
-
-  const errors = state.errors ?? [];
-  const errorMessage = errors.length > 0
-    ? errors.map(error => error.message).join(' ')
-    : 'Failed to send message. Please check your Formspree form and try again.';
 
   return (
     <section id="contact" className="py-24 lg:py-28 relative border-t border-white/8">
