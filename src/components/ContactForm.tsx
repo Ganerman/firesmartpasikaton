@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
+import { motion } from 'framer-motion';
+import { CheckCircle, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import SectionHeader from './SectionHeader';
 
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT as string | undefined;
