@@ -7,6 +7,7 @@ import Features from './components/Features';
 import Dataflow from './components/Dataflow';
 import TechStack from './components/TechStack';
 import Dashboard from './components/Dashboard';
+import Achievements from './components/Achievements';
 import Testimonials from './components/Testimonials';
 import Pricing from './components/Pricing';
 import FAQ from './components/FAQ';
@@ -25,6 +26,7 @@ function App() {
         <Dataflow />
         <TechStack />
         <Dashboard />
+        <Achievements />
         <Testimonials />
         <Pricing />
         <FAQ />
