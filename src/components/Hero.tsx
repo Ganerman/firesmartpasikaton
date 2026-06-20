@@ -69,12 +69,12 @@ const Hero = () => {
           </span>
 
           <h1 className="mt-6 text-4xl font-bold leading-[1.06] text-text-primary sm:text-5xl lg:text-[3rem] xl:text-[3.35rem]">
-            Monitor fire risk before it becomes an emergency.
+            Smart Fire Detection and Emergency Response System
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-text-secondary sm:text-lg lg:mx-0">
-            FireSmart gives property teams a real-time command center for smoke detection,
-            device health, emergency routing, and incident response across every building.
+            FireSmart uses IoT sensors, real-time monitoring, and automated emergency alerts to help
+            reduce fire response time and protect lives and properties.
           </p>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
@@ -83,11 +83,13 @@ const Hero = () => {
               Request Demo
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />
             </a>
-            <a href="#dashboard" className="btn-secondary group px-6 py-3">
+            <a href="#contact" className="btn-secondary group px-6 py-3">
               <LayoutDashboard className="h-4 w-4" strokeWidth={2.25} />
-              View Dashboard
+              Contact Us
             </a>
           </div>
+
+          <p className="mt-3 text-sm text-text-muted">Try a live demo — see alerts, mapping, and dispatch coordination in under 2 minutes.</p>
 
           <div className="mt-9 grid gap-3 sm:grid-cols-3">
             {trustPoints.map(({ icon: Icon, text }) => (

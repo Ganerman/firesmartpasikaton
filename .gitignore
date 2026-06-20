@@ -46,3 +46,8 @@ temp/
 # Cache
 .cache/
 .eslintcache
+
+# Media
+*.mp4
+video/
+public/*.mp4
