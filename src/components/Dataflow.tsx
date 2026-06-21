@@ -1,6 +1,6 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, ChevronRight, Cloud, Cpu, Phone, Smartphone } from 'lucide-react';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, Cloud, Phone, Smartphone, ChevronRight, ArrowRight } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 
 const steps = [
@@ -9,8 +9,8 @@ const steps = [
     icon: Cpu,
     title: 'IoT Hardware',
     subtitle: 'ESP32/Sensors',
-    shortDesc: 'Triggers on smoke or rapid temperature rise',
-    fullDesc: 'Our ESP32-based hardware continuously monitors the environment through multiple sensors including photoelectric smoke detection and NTC thermistors. The device performs edge computing to filter false positives and triggers alerts within 2 seconds of detecting anomalies. Low-power design ensures 3+ years of battery life.',
+    shortDesc: 'Detects smoke or rapid temperature rise',
+    fullDesc: 'Our ESP32-based hardware continuously monitors the environment with photoelectric smoke sensors and NTC thermistors. Embedded edge logic filters false positives and triggers alerts within 2 seconds of detecting anomalies. A low-power design supports more than 3 years of battery life.',
     color: 'orange',
     details: [
       'Photoelectric smoke sensor',
@@ -24,8 +24,8 @@ const steps = [
     icon: Cloud,
     title: 'Cloud Sync',
     subtitle: 'Supabase Backend',
-    shortDesc: 'Real-time data logging via WebSockets',
-    fullDesc: 'Sensor data streams directly to Supabase PostgreSQL database through persistent WebSocket connections. Each reading is timestamped, geo-tagged, and stored with redundancy. RLS policies ensure data privacy while real-time subscriptions enable instant notification dispatch.',
+    shortDesc: 'Real-time data logging over WebSockets',
+    fullDesc: 'Sensor data streams directly to a Supabase PostgreSQL database over persistent WebSocket connections. Each reading is timestamped, geo-tagged, and stored redundantly. Row Level Security preserves data privacy while real-time subscriptions enable instant notification dispatch.',
     color: 'cyan',
     details: [
       'PostgreSQL with automatic backups',
@@ -39,8 +39,8 @@ const steps = [
     icon: Phone,
     title: 'Emergency Broadcast',
     subtitle: 'API Triggers',
-    shortDesc: 'WhatsApp Voice + SMS to Fire Dept',
-    fullDesc: 'Critical alerts trigger an automated cascade: WhatsApp Business API initiates a voice call to the property owner while simultaneously dispatching an SMS with GPS coordinates to the Bureau of Fire Protection. The system confirms delivery and retries on failure.',
+    shortDesc: 'WhatsApp voice and SMS dispatch to fire response teams',
+    fullDesc: 'Critical alerts trigger an automated cascade: WhatsApp Business API places a voice call to the property owner while SMS with GPS coordinates is sent to the Bureau of Fire Protection. The system confirms delivery and retries on failure.',
     color: 'red',
     details: [
       'WhatsApp Business API voice calls',
@@ -54,8 +54,8 @@ const steps = [
     icon: Smartphone,
     title: 'Mobile View',
     subtitle: 'React Native App',
-    shortDesc: 'Push notifications & visual alerts',
-    fullDesc: 'Property owners receive instant push notifications on their iOS/Android devices, complete with sensor data, location mapping, and one-tap emergency services access. The app provides a real-time dashboard showing system health, battery levels, and historical incident logs.',
+    shortDesc: 'Push notifications and visual alerts',
+    fullDesc: 'Property owners receive instant push notifications on iOS and Android devices, complete with sensor data, location mapping, and one-tap emergency access. The app displays a live dashboard with system health, battery status, and incident history.',
     color: 'green',
     details: [
       'Cross-platform (iOS/Android)',

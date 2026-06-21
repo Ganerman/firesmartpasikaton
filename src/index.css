@@ -27,6 +27,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 8rem;
+  font-size: 106.25%;
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
   }
@@ -39,6 +40,7 @@ body {
   overflow-x: hidden;
   position: relative;
   width: 100%;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

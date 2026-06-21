@@ -1,31 +1,50 @@
 import { motion } from 'framer-motion';
 import { Award, Check, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import SectionHeader from './SectionHeader';
 
-const galleryItems = [
+const slideshowItems = [
   {
     id: 1,
-    title: 'Facility monitoring',
-    caption: '24/7 rooftop and lobby coverage',
+    title: 'IT Faculty',
+    caption: 'Project documentation and faculty collaboration highlights.',
     imageUrl: new URL('../../pictures/1.jpg', import.meta.url).href,
   },
   {
     id: 2,
-    title: 'Incident verification',
-    caption: 'Verified alerts before escalation',
+    title: 'ICT Month Achievement',
+    caption: 'Second place recognition at the capstone showcase.',
     imageUrl: new URL('../../pictures/2.jpg', import.meta.url).href,
   },
   {
     id: 3,
-    title: 'Control room visibility',
-    caption: 'Dashboard-led incident response',
+    title: 'Project Demonstration',
+    caption: 'Live project demonstration in front of judges.',
     imageUrl: new URL('../../pictures/3.jpg', import.meta.url).href,
   },
   {
     id: 4,
-    title: 'Safety workflow',
-    caption: 'Fast coordination across teams',
+    title: 'IT Faculty Context',
+    caption: 'Additional faculty context from the project presentation.',
     imageUrl: new URL('../../pictures/4.jpg', import.meta.url).href,
+  },
+  {
+    id: 5,
+    title: 'Demo Scene',
+    caption: 'Demonstration scene from the judge presentation.',
+    imageUrl: new URL('../../pictures/5.jpg', import.meta.url).href,
+  },
+  {
+    id: 6,
+    title: 'Mga Pasikaton',
+    caption: 'Project promotion and outreach highlights.',
+    imageUrl: new URL('../../pictures/6.jpg', import.meta.url).href,
+  },
+  {
+    id: 7,
+    title: 'FireSmart IoT Device',
+    caption: 'Prototype hardware image showcasing FireSmart technology.',
+    imageUrl: new URL('../../pictures/7.png', import.meta.url).href,
   },
 ];
 
@@ -44,44 +63,64 @@ const highlightItems = [
 ];
 
 const Achievements = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slideshowItems.length);
+    }, 4500);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const activeSlide = slideshowItems[currentSlide];
+
   return (
     <section id="achievements" className="py-24 lg:py-28 relative border-t border-white/8">
       <div className="site-container relative z-10">
         <SectionHeader
-          badge="Achievement Gallery"
+          badge="Project Highlights"
           badgeColor="orange"
-          title="Achievements displayed visually"
-          description="A gallery of real deployment wins, milestones, and measurable safety outcomes from FireSmart."
+          title="Visual documentation and deployment highlights"
+          description="A rotating gallery of project milestones, field deployments, and verified safety outcomes."
         />
 
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] xl:grid-cols-[1.6fr_1fr]">
-          <div className="grid gap-5 sm:grid-cols-2">
-            {galleryItems.map((item, index) => (
-              <motion.article
-                key={item.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.5)]"
-              >
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="h-72 w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+          <motion.article
+            key={activeSlide.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-[0_20px_80px_-40px_rgba(0,0,0,0.5)]"
+          >
+            <img
+              src={activeSlide.imageUrl}
+              alt={activeSlide.title}
+              className="h-[520px] w-full object-cover transition duration-700 ease-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-5 left-5 right-5">
+              <p className="text-xs uppercase tracking-[0.32em] text-cyan-accent/90">
+                {activeSlide.caption}
+              </p>
+              <h3 className="mt-2 text-3xl font-semibold text-white">
+                {activeSlide.title}
+              </h3>
+            </div>
+            <div className="absolute bottom-5 right-5 flex gap-2">
+              {slideshowItems.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-3 w-3 rounded-full border border-white/30 transition duration-200 ${
+                    index === currentSlide ? 'bg-cyan-accent' : 'bg-white/20'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-5 left-5 right-5">
-                  <p className="text-xs uppercase tracking-[0.32em] text-cyan-accent/90">
-                    {item.caption}
-                  </p>
-                  <h3 className="mt-2 text-xl font-semibold text-white">
-                    {item.title}
-                  </h3>
-                </div>
-              </motion.article>
-            ))}
-          </div>
+              ))}
+            </div>
+          </motion.article>
 
           <div className="flex flex-col gap-5">
             <motion.div

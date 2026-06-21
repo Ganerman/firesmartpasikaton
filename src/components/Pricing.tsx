@@ -6,7 +6,7 @@ const pricingPlans = [
   {
     id: 'starter',
     name: 'Starter',
-    description: 'For single-property residential deployments',
+    description: 'For residential and single-property deployments',
     price: 'PHP 5,999',
     period: '/month',
     popular: false,
@@ -23,7 +23,7 @@ const pricingPlans = [
   {
     id: 'professional',
     name: 'Professional',
-    description: 'For growing commercial portfolios',
+    description: 'For expanding commercial and multi-site deployments',
     price: 'PHP 12,999',
     period: '/month',
     popular: true,
@@ -42,7 +42,7 @@ const pricingPlans = [
   {
     id: 'enterprise',
     name: 'Enterprise',
-    description: 'For large-scale institutional clients',
+    description: 'For large organizations with custom safety requirements',
     price: 'Custom',
     period: '',
     popular: false,

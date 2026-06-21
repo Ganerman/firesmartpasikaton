@@ -65,7 +65,7 @@ const Features = () => {
           badgeColor="cyan"
           title="End-to-end protection"
           subtitle="in three integrated layers"
-          description="Sense, Sync, and Alert work together as a unified safety system - from hardware detection through cloud logging to emergency response."
+          description="Sense, Sync, and Alert work together as a unified safety system — from hardware detection through cloud logging to emergency response."
         />
 
         <div className="grid gap-5 md:grid-cols-3">

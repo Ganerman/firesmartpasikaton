@@ -1,19 +1,19 @@
 import { motion } from 'framer-motion';
 import {
-  Activity,
-  ArrowRight,
-  BellRing,
-  Building2,
-  Calendar,
-  CheckCircle2,
-  ChevronDown,
-  Flame,
-  LayoutDashboard,
-  MapPin,
-  Radio,
-  ShieldCheck,
-  Siren,
-  Zap,
+    Activity,
+    ArrowRight,
+    BellRing,
+    Building2,
+    Calendar,
+    CheckCircle2,
+    ChevronDown,
+    Flame,
+    LayoutDashboard,
+    MapPin,
+    Radio,
+    ShieldCheck,
+    Siren,
+    Zap,
 } from 'lucide-react';
 
 const trustPoints = [
@@ -69,12 +69,11 @@ const Hero = () => {
           </span>
 
           <h1 className="mt-6 text-4xl font-bold leading-[1.06] text-text-primary sm:text-5xl lg:text-[3rem] xl:text-[3.35rem]">
-            Smart Fire Detection and Emergency Response System
+            Intelligent Fire Detection & Emergency Response
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-text-secondary sm:text-lg lg:mx-0">
-            FireSmart uses IoT sensors, real-time monitoring, and automated emergency alerts to help
-            reduce fire response time and protect lives and properties.
+            FireSmart combines IoT sensors, live monitoring, and automated emergency alerts to reduce response time while protecting people and property.
           </p>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">

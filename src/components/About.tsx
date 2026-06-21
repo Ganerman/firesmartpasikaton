@@ -9,7 +9,7 @@ const About = () => {
           badgeColor="orange"
           title="About FireSmart"
           subtitle="IoT-powered fire monitoring and emergency response"
-          description="FireSmart is an IoT-powered fire monitoring and emergency response platform designed to provide early fire detection, real-time incident monitoring, and rapid emergency dispatch coordination. It surfaces incidents in real time, pinpoints locations, automates escalation, and stores incident history for reporting and analysis."
+          description="FireSmart is an IoT-powered fire safety platform that delivers early detection, real-time monitoring, and rapid emergency dispatch coordination. It captures incidents instantly, locates the source, automates escalation, and preserves incident history for reporting."
         />
       </div>
     </section>

@@ -2,18 +2,23 @@ import { BellRing, CheckCircle2, LayoutDashboard, MapPin, Zap } from 'lucide-rea
 import SectionHeader from './SectionHeader';
 
 const steps = [
-  { title: 'Fire Detection', desc: 'Smoke, flame, and temperature sensors continuously monitor the environment.', icon: Zap },
-  { title: 'Instant Alert', desc: 'When abnormal readings are detected, FireSmart automatically generates an emergency alert.', icon: BellRing },
-  { title: 'Location Identification', desc: 'The system pinpoints the exact location of the incident using GPS and registered establishment data.', icon: MapPin },
-  { title: 'Real-Time Monitoring', desc: 'The incident appears immediately on the FireSmart Dashboard and Live Map.', icon: LayoutDashboard },
-  { title: 'Dispatch Coordination', desc: 'Emergency responders can assign fire trucks and monitor response status.', icon: CheckCircle2 },
+  { title: 'Fire Detection', desc: 'Smoke, flame, and temperature sensors continuously monitor the environment for early warning signs.', icon: Zap },
+  { title: 'Instant Alert', desc: 'Abnormal readings trigger an automated emergency alert without manual intervention.', icon: BellRing },
+  { title: 'Location Identification', desc: 'The system pinpoints the incident location using GPS and site registration data.', icon: MapPin },
+  { title: 'Real-Time Monitoring', desc: 'The incident appears immediately on the FireSmart dashboard and live map.', icon: LayoutDashboard },
+  { title: 'Dispatch Coordination', desc: 'Emergency teams can assign resources and monitor response progress.', icon: CheckCircle2 },
 ];
 
 const HowItWorks = () => {
   return (
     <section id="how-it-works" className="py-20 lg:py-24">
       <div className="site-container">
-        <SectionHeader badge="How It Works" title="How FireSmart Works" subtitle="From detection to resolution" />
+        <SectionHeader
+          badge="How It Works"
+          title="How FireSmart Works"
+          subtitle="From detection to resolution"
+          description="See the end-to-end flow from incident detection through real-time alerting and response coordination."
+        />
 
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">

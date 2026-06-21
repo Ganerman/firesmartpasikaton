@@ -41,7 +41,7 @@ const ContactForm = () => {
           badge="Contact"
           badgeColor="orange"
           title="Speak with our team"
-          description="Request a demo, discuss deployment options, or ask about enterprise pricing. We respond within one business day."
+          description="Request a demo, discuss deployment options, or inquire about enterprise pricing. We respond within one business day."
         />
 
         <div className="grid lg:grid-cols-3 gap-8">

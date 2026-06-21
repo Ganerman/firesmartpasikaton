@@ -7,6 +7,7 @@ const navLinks = [
   { name: 'How It Works', href: '#dataflow', id: 'dataflow' },
   { name: 'Technology', href: '#techstack', id: 'techstack' },
   { name: 'Dashboard', href: '#dashboard', id: 'dashboard' },
+  { name: 'Documentation', href: '#achievements', id: 'achievements' },
   { name: 'Pricing', href: '#pricing', id: 'pricing' },
   { name: 'FAQ', href: '#faq', id: 'faq' },
 ];
