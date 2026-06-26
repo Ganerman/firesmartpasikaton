@@ -18,7 +18,6 @@ export { default as HowItWorks } from './HowItWorks';
 export { default as Pricing } from './Pricing';
 export { default as TechStack } from './TechStack';
 export { default as Testimonials } from './Testimonials';
-export { default as Video } from './Video';
 
 // Shared Components
 export { default as Button } from './Button';
