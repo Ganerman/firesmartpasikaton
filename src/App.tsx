@@ -1,3 +1,4 @@
+import About from './components/About';
 import Achievements from './components/Achievements';
 import BackToTop from './components/BackToTop';
 import ContactForm from './components/ContactForm';
@@ -23,6 +24,7 @@ function App() {
       <main id="main-content">
         <Hero />
         <StatsBar />
+        <About />
         <Features />
         <HowItWorks />
         <Dataflow />

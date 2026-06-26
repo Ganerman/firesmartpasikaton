@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Activity, AlertTriangle, Battery, CheckCircle, MapPin, Shield, Terminal, Wifi } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { Activity, AlertTriangle, CheckCircle, MapPin, Shield, Terminal, Wifi } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SectionHeader from './SectionHeader';
 
 interface LogEntry {
@@ -11,11 +11,25 @@ interface LogEntry {
   type: 'info' | 'warning' | 'critical' | 'success';
 }
 
+const zoneStatus = [
+  { zone: 'Zone A', state: 'Alert', hint: 'Smoke + heat spike detected', tone: 'text-red-alert', badge: 'bg-red-alert/10 border-red-alert/20' },
+  { zone: 'Zone B', state: 'Stable', hint: 'Normal environmental readings', tone: 'text-green-safe', badge: 'bg-green-safe/10 border-green-safe/20' },
+  { zone: 'Lobby', state: 'Monitoring', hint: 'Motion and access sensors active', tone: 'text-cyan-accent', badge: 'bg-cyan-accent/10 border-cyan-accent/20' },
+];
+
+const dashboardMetrics = [
+  { label: 'Detection latency', value: '1.8s', icon: Activity, tone: 'text-cyan-accent' },
+  { label: 'Alerts dispatched', value: '3', icon: CheckCircle, tone: 'text-green-safe' },
+  { label: 'Connected units', value: '22', icon: Wifi, tone: 'text-cyan-accent' },
+];
+
 const Dashboard = () => {
   const [status, setStatus] = useState<'safe' | 'critical'>('safe');
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isAlerting, setIsAlerting] = useState(false);
   const logContainerRef = useRef<HTMLDivElement>(null);
+
+  const activeZoneLabel = useMemo(() => (status === 'critical' ? 'Zone A' : 'Zone B'), [status]);
 
   const addLog = (entry: Omit<LogEntry, 'id' | 'timestamp'>) => {
     const newEntry: LogEntry = {
@@ -33,12 +47,12 @@ const Dashboard = () => {
     setStatus('critical');
 
     const sequence = [
-      { source: 'Hardware', message: 'Smoke detected in Zone A - Sensor #47', type: 'warning' as const, delay: 0 },
-      { source: 'Supabase', message: 'Logged entry #4910 to sensor_logs table', type: 'info' as const, delay: 800 },
-      { source: 'API', message: 'Triggering WhatsApp Voice Call to property owner', type: 'warning' as const, delay: 1600 },
-      { source: 'SMS', message: 'Dispatching GPS coordinates to Bureau of Fire Protection', type: 'critical' as const, delay: 2400 },
-      { source: 'Mobile', message: 'Push notification delivered to iOS & Android devices', type: 'success' as const, delay: 3200 },
-      { source: 'System', message: 'Emergency broadcast completed; awaiting response', type: 'critical' as const, delay: 4000 },
+      { source: 'Edge sensor', message: 'Smoke detected in Zone A — sensor #47', type: 'warning' as const, delay: 0 },
+      { source: 'Gateway', message: 'Telemetry forwarded to FireSmart cloud hub', type: 'info' as const, delay: 700 },
+      { source: 'Alert engine', message: 'Automated voice + SMS alert triggered for facility manager', type: 'warning' as const, delay: 1200 },
+      { source: 'Dispatch', message: 'BFP notified with exact coordinates and floor plan', type: 'critical' as const, delay: 1800 },
+      { source: 'Mobile app', message: 'On-site team confirmed receipt of emergency alert', type: 'success' as const, delay: 2400 },
+      { source: 'Control center', message: 'Incident logged and escalation path activated', type: 'critical' as const, delay: 3000 },
     ];
 
     for (const item of sequence) {
@@ -70,7 +84,7 @@ const Dashboard = () => {
           badge="Live Demonstration"
           badgeColor="red"
           title="Operations dashboard"
-          description="Simulate a fire event to observe how FireSmart coordinates detection, logging, and emergency notification in real time."
+          description="Simulate a fire event and see how FireSmart tracks incidents, sends alerts, and coordinates a real-time response."
         />
 
         <motion.div
@@ -79,10 +93,13 @@ const Dashboard = () => {
           viewport={{ once: true }}
           className="glass-card rounded-2xl overflow-hidden"
         >
-          <div className="grid lg:grid-cols-3">
-            <div className="lg:col-span-2 p-6 lg:p-8">
+          <div className="grid gap-6 lg:grid-cols-[1.65fr_0.95fr]">
+            <div className="p-6 lg:p-8">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-xl font-semibold">Control Center</h3>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.24em] text-text-muted">FireSmart control center</p>
+                  <h3 className="mt-2 text-xl font-semibold">Live incident monitoring</h3>
+                </div>
                 <div className="flex items-center gap-2">
                   <Wifi className="w-4 h-4 text-cyan-accent" />
                   <span className="text-text-muted text-sm">Connected</span>
@@ -90,33 +107,18 @@ const Dashboard = () => {
               </div>
 
               <div className="grid sm:grid-cols-3 gap-4 mb-8">
-                <div className="glass-card rounded-xl p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Activity className="w-5 h-5 text-cyan-accent" />
-                    <span className="text-text-muted text-sm">Status</span>
-                  </div>
-                  <div className={`text-2xl font-bold ${
-                    status === 'safe' ? 'text-green-safe' : 'text-red-alert'
-                  }`}>
-                    {status === 'safe' ? 'SAFE' : 'CRITICAL'}
-                  </div>
-                </div>
-
-                <div className="glass-card rounded-xl p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Battery className="w-5 h-5 text-green-safe" />
-                    <span className="text-text-muted text-sm">Battery</span>
-                  </div>
-                  <div className="text-2xl font-bold text-text-primary">98%</div>
-                </div>
-
-                <div className="glass-card rounded-xl p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <MapPin className="w-5 h-5 text-orange-accent" />
-                    <span className="text-text-muted text-sm">Location</span>
-                  </div>
-                  <div className="text-lg font-semibold text-text-primary">Zone A</div>
-                </div>
+                {dashboardMetrics.map((item) => {
+                  const Icon = item.icon as any;
+                  return (
+                    <div key={item.label} className="glass-card rounded-xl p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Icon className={`w-5 h-5 ${item.tone}`} />
+                        <span className="text-text-muted text-sm">{item.label}</span>
+                      </div>
+                      <div className={`text-2xl font-bold ${item.tone}`}>{item.value}</div>
+                    </div>
+                  );
+                })}
               </div>
 
               <AnimatePresence mode="wait">
@@ -136,7 +138,7 @@ const Dashboard = () => {
                       <Shield className="w-16 h-16 text-green-safe" />
                       <div>
                         <p className="text-2xl font-bold text-green-safe">System Normal</p>
-                        <p className="text-text-muted">All sensors operational</p>
+                        <p className="text-text-muted">All circuits and sensors are stable.</p>
                       </div>
                     </>
                   ) : (
@@ -149,7 +151,7 @@ const Dashboard = () => {
                       </motion.div>
                       <div>
                         <p className="text-2xl font-bold text-red-alert">CRITICAL ALERT</p>
-                        <p className="text-text-muted">Smoke detected; emergency broadcast triggered</p>
+                        <p className="text-text-muted">Zone A smoke detection has triggered an emergency response.</p>
                       </div>
                     </>
                   )}
@@ -179,58 +181,104 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="border-t lg:border-t-0 lg:border-l border-white/10 p-6 lg:p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <Terminal className="w-5 h-5 text-text-muted" />
-                <h4 className="font-semibold text-text-primary">Event Log</h4>
+            <div className="space-y-6 p-6 lg:p-8">
+              <div className="glass-card rounded-2xl border border-white/10 p-5">
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-text-primary">Site status</h4>
+                    <p className="text-xs text-text-muted">Active zones and sensor health</p>
+                  </div>
+                  <span className="rounded-full bg-surface-light px-3 py-1 text-xs font-semibold text-text-muted">{activeZoneLabel}</span>
+                </div>
+                <div className="space-y-3">
+                  {zoneStatus.map((zone) => (
+                    <div key={zone.zone} className="flex items-center justify-between gap-3 rounded-2xl border p-3 text-sm bg-background/80 border-white/10">
+                      <div className="space-y-1">
+                        <p className="font-semibold text-text-primary">{zone.zone}</p>
+                        <p className="text-text-muted">{zone.hint}</p>
+                      </div>
+                      <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${zone.badge} ${zone.tone}`}>{zone.state}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div
-                ref={logContainerRef}
-                className="h-[400px] lg:h-full min-h-[300px] overflow-y-auto space-y-2 font-mono text-sm"
-              >
-                {logs.length === 0 ? (
-                  <div className="text-text-muted text-center py-8">
-                    {status === 'safe' ? (
-                      <div className="flex items-center justify-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-safe" />
-                        <span>No events; system idle</span>
-                      </div>
-                    ) : (
-                      <span className="text-red-alert">Initializing...</span>
-                    )}
+              <div className="glass-card rounded-2xl border border-white/10 p-5">
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-text-primary">Site map</h4>
+                    <p className="text-xs text-text-muted">Real map view with active zone highlighted</p>
                   </div>
-                ) : (
-                  <AnimatePresence>
-                    {logs.map((log) => (
-                      <motion.div
-                        key={log.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className={`p-3 rounded-lg ${
-                          log.type === 'critical'
-                            ? 'bg-red-alert/10 border-l-2 border-red-alert'
-                            : log.type === 'warning'
-                            ? 'bg-orange-accent/10 border-l-2 border-orange-accent'
-                            : log.type === 'success'
-                            ? 'bg-green-safe/10 border-l-2 border-green-safe'
-                            : 'bg-surface-light border-l-2 border-cyan-accent'
-                        }`}
-                      >
-                        <div className="text-text-muted text-xs mb-1">{log.timestamp}</div>
-                        <div className={`
-                          ${log.type === 'critical' ? 'text-red-alert' : ''}
-                          ${log.type === 'warning' ? 'text-orange-accent' : ''}
-                          ${log.type === 'success' ? 'text-green-safe' : ''}
-                          ${log.type === 'info' ? 'text-cyan-accent' : ''}
-                        `}>
-                          [{log.source}]
+                  <span className="inline-flex items-center gap-2 rounded-full border border-cyan-accent/20 bg-cyan-accent/10 px-3 py-1 text-xs font-semibold text-cyan-accent">
+                    <MapPin className="w-3.5 h-3.5" />
+                    {activeZoneLabel}
+                  </span>
+                </div>
+                <div className="overflow-hidden rounded-3xl border border-white/10 bg-surface/95">
+                  <iframe
+                    title="FireSmart site map"
+                    className="h-[280px] w-full rounded-3xl border-0"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=121.026%2C14.571%2C121.031%2C14.576&layer=mapnik&marker=14.5735%2C121.0285"
+                    loading="lazy"
+                    aria-hidden="false"
+                  />
+                </div>
+                <p className="mt-3 text-xs text-text-muted">Map data from OpenStreetMap.</p>
+              </div>
+
+              <div className="border-t lg:border-t-0 lg:border-l border-white/10 p-0">
+                <div className="flex items-center gap-2 mb-4">
+                  <Terminal className="w-5 h-5 text-text-muted" />
+                  <h4 className="font-semibold text-text-primary">Event Log</h4>
+                </div>
+                <div
+                  ref={logContainerRef}
+                  className="h-[400px] lg:h-full min-h-[300px] overflow-y-auto space-y-2 rounded-3xl border border-white/10 bg-background/60 p-4 font-mono text-sm"
+                >
+                  {logs.length === 0 ? (
+                    <div className="text-text-muted text-center py-8">
+                      {status === 'safe' ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-safe" />
+                          <span>No events yet — system idle</span>
                         </div>
-                        <div className="text-text-secondary mt-1">{log.message}</div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                )}
+                      ) : (
+                        <span className="text-red-alert">Initializing alert sequence...</span>
+                      )}
+                    </div>
+                  ) : (
+                    <AnimatePresence>
+                      {logs.map((log) => (
+                        <motion.div
+                          key={log.id}
+                          initial={{ opacity: 0, x: -18 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className={`p-3 rounded-2xl ${
+                            log.type === 'critical'
+                              ? 'bg-red-alert/10 border-l-2 border-red-alert'
+                              : log.type === 'warning'
+                              ? 'bg-orange-accent/10 border-l-2 border-orange-accent'
+                              : log.type === 'success'
+                              ? 'bg-green-safe/10 border-l-2 border-green-safe'
+                              : 'bg-surface-light border-l-2 border-cyan-accent'
+                          }`}
+                        >
+                          <div className="text-text-muted text-[0.65rem] uppercase tracking-[0.18em] mb-1">{log.timestamp}</div>
+                          <div className={`text-sm font-semibold ${
+                            log.type === 'critical'
+                              ? 'text-red-alert'
+                              : log.type === 'warning'
+                              ? 'text-orange-accent'
+                              : log.type === 'success'
+                              ? 'text-green-safe'
+                              : 'text-cyan-accent'
+                          }`}>[{log.source}]</div>
+                          <div className="text-text-secondary mt-1">{log.message}</div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  )}
+                </div>
               </div>
             </div>
           </div>
